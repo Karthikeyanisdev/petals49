@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>petals49</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+</head>
+<body>
+  <h2>petals49</h2>
+  <input id="msg" placeholder="Enter message" />
+  <button onclick="send()">Send</button>
+
+  <script>
+    const firebaseConfig = {
+  apiKey: "AIzaSyCHWbc5zAwpgddZIB4ZqJIiRtRE17SB2go",
+  authDomain: "petals49-c1149.firebaseapp.com",
+  databaseURL: "https://petals49-c1149-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "petals49-c1149",
+  storageBucket: "petals49-c1149.firebasestorage.app",
+  messagingSenderId: "642866479041",
+  appId: "1:642866479041:web:5d0c2d80836d3bc8b23940",
+  measurementId: "G-SRTJ60SFK9"
+};
+    firebase.initializeApp(firebaseConfig);
+
+    function send() {
+      let msg = document.getElementById("msg").value;
+      if (msg) {
+        firebase.database().ref("messages").push(msg);
+        alert("Message sent!");
+        document.getElementById("msg").value = "";
+      }
+    }
+  </script>
+</body>
+</html>
