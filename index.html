@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Message Sender</title>
-  <style>
-    body { font-family: Arial; text-align: center; margin-top: 100px; }
-    input, button { padding: 10px; margin: 5px; width: 250px; }
-  </style>
+  <title>petals49</title>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
 <body>
   <h2>petals49</h2>
-  <input id="msg" type="text" placeholder="Type your message...">
-  <button onclick="sendMessage()">Send</button>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-    import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+  <input id="msg" placeholder="Enter message" />
+  <button onclick="send()">Send</button>
 
+  <script>
     const firebaseConfig = {
-      apiKey: "AIzaSyCHWbc5zAwpgddZIB4ZqJIiRtRE17SB2go",
-      databaseURL: "https://petals49-c1149-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "petals49-c1149"
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+  apiKey: "AIzaSyCHWbc5zAwpgddZIB4ZqJIiRtRE17SB2go",
+  authDomain: "petals49-c1149.firebaseapp.com",
+  databaseURL: "https://petals49-c1149-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "petals49-c1149",
+  storageBucket: "petals49-c1149.firebasestorage.app",
+  messagingSenderId: "642866479041",
+  appId: "1:642866479041:web:5d0c2d80836d3bc8b23940",
+  measurementId: "G-SRTJ60SFK9"
+};
+    firebase.initializeApp(firebaseConfig);
 
-    async function sendMessage() {
-      const text = document.getElementById("msg").value;
-      const now = new Date().toLocaleString();
-      const snapshot = await get(ref(db, "messages"));
-      let messages = snapshot.exists() ? snapshot.val() : [];
-      messages.push({ text, time: now });
-      await set(ref(db, "messages"), messages);
-      alert("Message sent!");
+    function send() {
+      let msg = document.getElementById("msg").value;
+      if (msg) {
+        firebase.database().ref("messages").push(msg);
+        alert("Message sent!");
+        document.getElementById("msg").value = "";
+      }
     }
   </script>
 </body>
