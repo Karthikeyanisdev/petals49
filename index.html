@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html>
-<head><title>petals49</title></head>
+<head>
+  <title>Message Sender</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin-top: 100px; }
+    input, button { padding: 10px; margin: 5px; width: 250px; }
+  </style>
+</head>
 <body>
   <h2>petals49</h2>
-  <textarea id="msg" rows="3" cols="30"></textarea><br>
+  <input id="msg" type="text" placeholder="Type your message...">
   <button onclick="sendMessage()">Send</button>
-
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCHWbc5zAwpgddZIB4ZqJIiRtRE17SB2go",
-      authDomain: "petals49-c1149.firebaseapp.com",
       databaseURL: "https://petals49-c1149-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "petals49-c1149",
-
+      projectId: "petals49-c1149"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    function sendMessage() {
-      const msg = document.getElementById("msg").value;
+    async function sendMessage() {
+      const text = document.getElementById("msg").value;
       const now = new Date().toLocaleString();
-      get(child(ref(db), "messages")).then((snap) => {
-        const index = snap.exists() ? Object.keys(snap.val()).length : 0;
-        set(ref(db, "messages/" + index), { text: msg, time: now });
-      });
+      const snapshot = await get(ref(db, "messages"));
+      let messages = snapshot.exists() ? snapshot.val() : [];
+      messages.push({ text, time: now });
+      await set(ref(db, "messages"), messages);
       alert("Message sent!");
     }
   </script>
